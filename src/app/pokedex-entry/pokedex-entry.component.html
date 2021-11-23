@@ -1,0 +1,11 @@
+<div *ngIf="selectedPokemon; else noPokemonDisplay">
+    <h2>{{ selectedPokemon.name | uppercase }} Entry</h2>
+    <div><span>Number: </span>{{ selectedPokemon.id }}</div>
+    <div>
+        <span>Type: </span>
+        <span *ngFor="let type of selectedPokemonTypes">
+            <span [class]="'type ' + type">{{ type }}</span>
+        </span>
+    </div>
+</div>
+<div #noPokemonDisplay>No pokemon to display.</div>

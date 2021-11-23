@@ -1,0 +1,6 @@
+<ul>
+    <li *ngFor="let pokemon of pokemonList" (click)="onSelect(pokemon.name)">
+        {{ pokemon.name }}
+    </li>
+</ul>
+<pokedex-entry [selectedPokemon]="selectedPokemon"></pokedex-entry>
