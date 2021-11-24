@@ -12,9 +12,16 @@ export class PokedexEntryComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {}
+
     get selectedPokemonTypes() {
         return this.selectedPokemon?.types
             .map((pokemonType) => pokemonType.type)
             .map((type) => type.name);
+    }
+
+    get pokemonNumberDisplay(): string {
+        const numberSign = "#";
+        const numberWithPadding = "000" + this.selectedPokemon?.id.toString();
+        return numberSign + numberWithPadding.slice(-3);
     }
 }
