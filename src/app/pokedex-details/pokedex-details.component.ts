@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { Pokemon } from "pokenode-ts";
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { Pokemon, PokemonClient } from "pokenode-ts";
 
 @Component({
     selector: "app-pokedex-details",
@@ -7,7 +8,19 @@ import { Pokemon } from "pokenode-ts";
     styleUrls: ["./pokedex-details.component.scss"],
 })
 export class PokedexDetailsComponent implements OnInit {
-    constructor() {}
+    public selectedPokemon?: Pokemon;
+    private pokemonClient: PokemonClient;
 
-    ngOnInit(): void {}
+    constructor(private route: ActivatedRoute) {
+        this.pokemonClient = new PokemonClient();
+    }
+
+    ngOnInit(): void {
+        this.pokemonClient
+            .getPokemonById(Number(this.route.snapshot.paramMap.get("id")))
+            .then((data) => {
+                this.selectedPokemon = data;
+            })
+            .catch((error) => console.error(error));
+    }
 }
