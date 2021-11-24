@@ -1,0 +1,62 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+}
+.flex {
+    display: flex;
+    flex-direction: column;
+    column-gap: 30px;
+    app-pokedex-entry {
+        flex-grow: 1;
+    }
+
+    .center {
+        display: flex;
+        align-items: center;
+        padding: 6px 0;
+        cursor: pointer;
+
+        svg {
+            margin-right: 4px;
+        }
+    }
+    .list-display {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            row-gap: 4px;
+            justify-content: space-between;
+            width: 90%;
+            li {
+                background-color: aliceblue;
+                border-radius: 20px;
+                list-style: none;
+                width: 130px;
+            }
+        }
+        .pagination {
+            width: 40px;
+            height: 60px;
+            position: relative;
+            background-color: #efefef;
+            border-radius: 4px;
+            box-shadow: 0 0 10px -5px rgb(0 0 0 / 20%);
+            text-align: center;
+            font-size: 40px;
+            cursor: pointer;
+
+            &.left::before {
+                content: "\276E";
+            }
+            &.right::before {
+                content: "\276F";
+            }
+        }
+    }
+}

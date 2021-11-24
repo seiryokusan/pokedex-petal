@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { type } from "os";
-import { Pokemon, PokemonClient, Type, Types } from "pokenode-ts";
+import { NamedAPIResource, Pokemon, PokemonClient } from "pokenode-ts";
 
 @Component({
     selector: "app-pokedex-main",
@@ -8,8 +7,13 @@ import { Pokemon, PokemonClient, Type, Types } from "pokenode-ts";
     styleUrls: ["./pokedex-main.component.scss"],
 })
 export class PokedexMainComponent implements OnInit {
-    public pokemonList: any[] = [];
+    public pokemonList: NamedAPIResource[] = [];
     public selectedPokemon?: Pokemon;
+    public pagingInfo = {
+        currentPage: 0,
+        pageSize: 50,
+        totalEntries: 0,
+    };
 
     private pokemonClient: PokemonClient;
 
@@ -19,10 +23,10 @@ export class PokedexMainComponent implements OnInit {
 
     ngOnInit(): void {
         this.pokemonClient
-            .listPokemons()
+            .listPokemons(0, 50)
             .then((data) => {
-                console.log(data);
-                this.pokemonList = data.results;
+                this.pokemonList = data.results as NamedAPIResource[];
+                this.pagingInfo.totalEntries = data.count;
             })
             .catch((error) => console.error(error));
     }
@@ -31,10 +35,41 @@ export class PokedexMainComponent implements OnInit {
         this.pokemonClient
             .getPokemonByName(name)
             .then((data) => {
-                console.log(data);
                 this.selectedPokemon = data;
             })
             .catch((error) => console.error(error));
     }
 
+    onPreviousPageClick() {
+        if (this.pagingInfo.currentPage === 0) {
+            return;
+        }
+        const currentOffset =
+            this.pagingInfo.pageSize * (this.pagingInfo.currentPage - 1);
+        this.pokemonClient
+            .listPokemons(currentOffset, this.pagingInfo.pageSize)
+            .then((data) => {
+                this.pokemonList = data.results as NamedAPIResource[];
+                this.pagingInfo.currentPage--;
+            })
+            .catch((error) => console.error(error));
+    }
+
+    onNextPageClick() {
+        if (
+            (this.pagingInfo.currentPage + 1) * this.pagingInfo.pageSize >
+            this.pagingInfo.totalEntries
+        ) {
+            return;
+        }
+        const currentOffset =
+            this.pagingInfo.pageSize * (this.pagingInfo.currentPage + 1);
+        this.pokemonClient
+            .listPokemons(currentOffset, this.pagingInfo.pageSize)
+            .then((data) => {
+                this.pokemonList = data.results as NamedAPIResource[];
+                this.pagingInfo.currentPage++;
+            })
+            .catch((error) => console.error(error));
+    }
 }
