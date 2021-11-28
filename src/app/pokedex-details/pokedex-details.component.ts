@@ -25,18 +25,14 @@ export class PokedexDetailsComponent implements OnInit {
         });
     }
 
-    ngOnInit(): void {
-        this.pokemonClient
-            .getPokemonById(Number(this.route.snapshot.paramMap.get("id")))
-            .then((pokemon) => {
-                this.selectedPokemon = pokemon;
-                this.pokemonClient.getPokemonSpeciesByName(pokemon.species.name).then((species) => {
-                    this.utilityClient.getResourceByUrl(species.evolution_chain.url).then((chain: EvolutionChain) => {
-                        this.getEvolutionChainNames(chain);
-                    });
-                });
-            })
-            .catch((error) => console.error(error));
+    async ngOnInit(): Promise<void> {
+        const pokemon = await this.pokemonClient.getPokemonById(Number(this.route.snapshot.paramMap.get("id")));
+        this.selectedPokemon = pokemon;
+
+        const species = await this.pokemonClient.getPokemonSpeciesByName(pokemon.species.name);
+
+        const chain: EvolutionChain = await this.utilityClient.getResourceByUrl(species.evolution_chain.url);
+        this.evolutionsPokemon = await this.getEvolutionChainNames(chain);
     }
 
     ngOnDestroy() {
@@ -68,10 +64,10 @@ export class PokedexDetailsComponent implements OnInit {
         return Promise.all(groupOfCalls);
     }
 
-    private async getEvolutionChainNames(chain: EvolutionChain) {
+    private getEvolutionChainNames(chain: EvolutionChain) {
         const evolutionChainNamesBuffer: string[] = [chain.chain.species.name || ""];
         this.recursiveEvolvesInto(chain.chain.evolves_to || [], evolutionChainNamesBuffer);
-        this.evolutionsPokemon = await this.getPokemons(evolutionChainNamesBuffer);
+        return this.getPokemons(evolutionChainNamesBuffer);
     }
 
     get selectedPokemonTypes() {

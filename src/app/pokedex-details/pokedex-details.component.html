@@ -2,7 +2,7 @@
 
 <div class="entry-container" *ngIf="selectedPokemon">
     <h2 class="entry-name">
-        <img [src]="this.selectedPokemon.sprites.other['official-artwork'].front_default" />
+        <img [src]="selectedPokemon.sprites.other['official-artwork'].front_default" />
         {{ selectedPokemon.name | titlecase }}
     </h2>
     <div class="entry-details">
