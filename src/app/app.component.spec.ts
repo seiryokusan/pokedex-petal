@@ -16,18 +16,16 @@ describe("AppComponent", () => {
         expect(app).toBeTruthy();
     });
 
-    it(`should have as title 'pokedex-petal'`, () => {
+    it(`should have as title "Pokedex v2.0"`, () => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = fixture.componentInstance;
-        expect(app.title).toEqual("pokedex-petal");
+        expect(app.title).toEqual("Pokedex v2.0");
     });
 
     it("should render title", () => {
         const fixture = TestBed.createComponent(AppComponent);
         fixture.detectChanges();
         const compiled = fixture.nativeElement as HTMLElement;
-        expect(compiled.querySelector(".content span")?.textContent).toContain(
-            "pokedex-petal app is running!"
-        );
+        expect(compiled.querySelector("h1")?.textContent).toContain("Pokedex v2.0");
     });
 });
