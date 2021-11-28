@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Pokemon } from "pokenode-ts";
+import { PokemonUtils } from "src/utils/pokemon-utils";
 
 @Component({
     selector: "app-pokedex-entry",
@@ -14,14 +15,12 @@ export class PokedexEntryComponent implements OnInit {
     ngOnInit(): void {}
 
     get selectedPokemonTypes() {
-        return this.selectedPokemon?.types
-            .map((pokemonType) => pokemonType.type)
-            .map((type) => type.name);
+        return PokemonUtils.pokemonTypesNames(
+            this.selectedPokemon?.types || []
+        );
     }
 
     get pokemonNumberDisplay(): string {
-        const numberSign = "#";
-        const numberWithPadding = "000" + this.selectedPokemon?.id.toString();
-        return numberSign + numberWithPadding.slice(-3);
+        return PokemonUtils.pokemonNumberDisplay(this.selectedPokemon?.id || 0);
     }
 }
