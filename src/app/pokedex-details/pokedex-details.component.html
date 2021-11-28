@@ -1,3 +1,27 @@
-<a routerLink="/pokedex">← Back To Pokedex</a>
+<a routerLink="/pokedex" class="back-link">← Back To Pokedex</a>
 
-<!-- <h1>{{ pokemonName }}</h1> -->
+<div class="entry-container" *ngIf="selectedPokemon">
+    <h2 class="entry-name">
+        <img [src]="this.selectedPokemon.sprites.other['official-artwork'].front_default" />
+        {{ selectedPokemon.name | titlecase }}
+    </h2>
+    <div class="entry-details">
+        <div class="entry-number">{{ pokemonNumberDisplay }}</div>
+        <span>
+            Type:
+            <span *ngFor="let type of selectedPokemonTypes">
+                <span [class]="'type ' + type">{{ type }}</span>
+            </span>
+        </span>
+    </div>
+    <h4>Evolution Chain</h4>
+    <div class="evolution">
+        <div *ngFor="let evolution of evolutionsPokemon; let last = last" class="chain">
+            <a [routerLink]="['/pokedex/entry/', evolution.id]" class="sprite-name">
+                <img [src]="evolution.sprites.front_default" />
+                {{ evolution.name | titlecase }}
+            </a>
+            <div *ngIf="!last" class="arrow"></div>
+        </div>
+    </div>
+</div>
