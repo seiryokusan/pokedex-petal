@@ -6,11 +6,15 @@ import { PokedexMainComponent } from "./pokedex-main/pokedex-main.component";
 const routes: Routes = [
     { path: "", redirectTo: "/pokedex", pathMatch: "full" },
     { path: "pokedex", component: PokedexMainComponent },
-    { path: "pokedex/entry/:id", component: PokedexDetailsComponent },
+    {
+        path: "pokedex/entry/:id",
+        component: PokedexDetailsComponent,
+        runGuardsAndResolvers: "always",
+    },
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: "reload" })],
     exports: [RouterModule],
 })
 export class AppRoutingModule {}
