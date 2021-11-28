@@ -15,7 +15,7 @@ export class PokedexMainComponent implements OnInit {
         totalEntries: 0,
     };
 
-    private pokemonClient: PokemonClient;
+    public pokemonClient: PokemonClient;
 
     constructor() {
         this.pokemonClient = new PokemonClient();
@@ -44,8 +44,7 @@ export class PokedexMainComponent implements OnInit {
         if (this.pagingInfo.currentPage === 0) {
             return;
         }
-        const currentOffset =
-            this.pagingInfo.pageSize * (this.pagingInfo.currentPage - 1);
+        const currentOffset = this.pagingInfo.pageSize * (this.pagingInfo.currentPage - 1);
         this.pokemonClient
             .listPokemons(currentOffset, this.pagingInfo.pageSize)
             .then((data) => {
@@ -56,14 +55,10 @@ export class PokedexMainComponent implements OnInit {
     }
 
     onNextPageClick() {
-        if (
-            (this.pagingInfo.currentPage + 1) * this.pagingInfo.pageSize >
-            this.pagingInfo.totalEntries
-        ) {
+        if ((this.pagingInfo.currentPage + 1) * this.pagingInfo.pageSize > this.pagingInfo.totalEntries) {
             return;
         }
-        const currentOffset =
-            this.pagingInfo.pageSize * (this.pagingInfo.currentPage + 1);
+        const currentOffset = this.pagingInfo.pageSize * (this.pagingInfo.currentPage + 1);
         this.pokemonClient
             .listPokemons(currentOffset, this.pagingInfo.pageSize)
             .then((data) => {
